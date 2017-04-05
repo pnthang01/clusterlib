@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Properties>
+        <Property name="basePath">logs</Property>
+        <Property name="basePattern">[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5p] %t -> %c{1} : %msg%n</Property>
+    </Properties>
+    
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${basePattern}" />
+        </Console>
+        <RollingFile name="fileLogger" fileName="${basePath}/cluster-master.log" 
+                     filePattern="${basePath}/cluster-master-%d{yyyy-MM-dd-HH-mm}.log">
+            <PatternLayout>
+                <pattern>${basePattern}</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="io.cluster" level="info" additivity="true">
+            <appender-ref ref="fileLogger" level="info" />
+        </Logger>
+        <Root level="debug" additivity="false">
+            <AppenderRef ref="console" />
+        </Root>
+    </Loggers>
+</Configuration>
